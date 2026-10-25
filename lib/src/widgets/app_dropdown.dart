@@ -60,9 +60,14 @@ class _AppDropdownState<T> extends State<AppDropdown<T>> {
     }
   }
 
-  void _close() {
+  void _removeEntry() {
     _entry?.remove();
+    _entry?.dispose();
     _entry = null;
+  }
+
+  void _close() {
+    _removeEntry();
     if (_open) setState(() => _open = false);
   }
 
@@ -151,8 +156,16 @@ class _AppDropdownState<T> extends State<AppDropdown<T>> {
   }
 
   @override
+  void didUpdateWidget(covariant AppDropdown<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Keep an open menu in sync with new items.
+    _entry?.markNeedsBuild();
+  }
+
+  @override
   void dispose() {
-    _close();
+    // No setState here: the element is already defunct during dispose.
+    _removeEntry();
     super.dispose();
   }
 

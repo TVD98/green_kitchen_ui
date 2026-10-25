@@ -18,6 +18,8 @@ abstract final class AppBottomSheet {
       isDismissible: isDismissible,
       enableDrag: enableDrag,
       isScrollControlled: true,
+      // The shell draws its own handle; keep the theme's Material handle off.
+      showDragHandle: false,
       backgroundColor: Colors.transparent,
       barrierColor: Colors.black.withValues(alpha: 0.45),
       builder: (sheetContext) {

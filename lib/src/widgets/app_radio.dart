@@ -77,7 +77,8 @@ class AppRadioGroup<T> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        for (final item in items) ...[
+        for (final (index, item) in items.indexed) ...[
+          if (index > 0) const SizedBox(height: AppSpacing.gap16),
           AppRadio<T>(
             value: item.value,
             groupValue: value,
@@ -88,7 +89,6 @@ class AppRadioGroup<T> extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
           ),
-          if (item != items.last) const SizedBox(height: AppSpacing.gap16),
         ],
       ],
     );

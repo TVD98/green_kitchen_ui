@@ -7,7 +7,7 @@ import '../tokens/app_typography.dart';
 
 enum AppButtonVariant { social, primary, soft, outline, text }
 
-/// Brand button with Focuso variants, loading, and disabled states.
+/// Brand button with variants, loading, and disabled states.
 class AppButton extends StatelessWidget {
   const AppButton({
     super.key,
@@ -28,6 +28,11 @@ class AppButton extends StatelessWidget {
 
   bool get _enabled => onPressed != null && !isLoading;
 
+  /// Disabled by the caller (not merely busy loading).
+  bool get _isDisabled => onPressed == null && !isLoading;
+
+  static const double _disabledAlpha = 0.4;
+
   @override
   Widget build(BuildContext context) {
     final brightness = Theme.of(context).brightness;
@@ -35,7 +40,7 @@ class AppButton extends StatelessWidget {
 
     final labelStyle = AppTypography.body(
       weight: FontWeight.w600,
-      color: _foreground(brightness),
+      color: _labelColor(brightness),
     );
 
     final content = isLoading
@@ -54,7 +59,7 @@ class AppButton extends StatelessWidget {
               if (leading != null) ...[
                 IconTheme(
                   data: IconThemeData(
-                    color: _foreground(brightness),
+                    color: _labelColor(brightness),
                     size: 20,
                   ),
                   child: leading!,
@@ -121,7 +126,11 @@ class AppButton extends StatelessWidget {
           style: OutlinedButton.styleFrom(
             foregroundColor: AppColors.brand,
             backgroundColor: Theme.of(context).colorScheme.surface,
-            side: const BorderSide(color: AppColors.brand),
+            side: BorderSide(
+              color: _isDisabled
+                  ? AppColors.brand.withValues(alpha: _disabledAlpha)
+                  : AppColors.brand,
+            ),
             shape: shape,
             padding: padding,
           ),
@@ -140,6 +149,15 @@ class AppButton extends StatelessWidget {
 
     if (!isExpanded) return button;
     return SizedBox(width: double.infinity, child: button);
+  }
+
+  /// Label/icon color. The label color is set explicitly (overriding the
+  /// button's own disabled foreground), so fade it here when disabled. The
+  /// primary variant already fades through its disabled background.
+  Color _labelColor(Brightness brightness) {
+    final color = _foreground(brightness);
+    if (!_isDisabled || variant == AppButtonVariant.primary) return color;
+    return color.withValues(alpha: _disabledAlpha);
   }
 
   Color _foreground(Brightness brightness) {

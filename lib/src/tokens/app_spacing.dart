@@ -1,4 +1,4 @@
-/// Focuso gap / padding scale.
+/// Gap / padding scale.
 abstract final class AppSpacing {
   static const double none = 0;
   static const double gap2 = 2;

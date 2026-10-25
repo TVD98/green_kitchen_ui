@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../tokens/app_colors.dart';
 
-/// Controlled boolean toggle with Focuso brand ON / greyscale OFF.
+/// Controlled boolean toggle with brand ON / greyscale OFF.
 class AppSwitch extends StatelessWidget {
   const AppSwitch({
     super.key,

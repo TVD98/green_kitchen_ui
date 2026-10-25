@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:green_kitchen_ui/green_kitchen_ui.dart';
 
 void main() {
-  setUpAll(() {
-    TestWidgetsFlutterBinding.ensureInitialized();
-    GoogleFonts.config.allowRuntimeFetching = false;
-  });
-
   group('AppColors', () {
     test('brand matches kitchen green', () {
       expect(AppColors.primary, const Color(0xFF4AAF57));
@@ -31,7 +25,7 @@ void main() {
   });
 
   group('tokens', () {
-    test('Focuso spacing and radius', () {
+    test('spacing and radius', () {
       expect(AppSpacing.gap10, 10);
       expect(AppSpacing.md, 16);
       expect(AppRadius.tab, 6);
@@ -84,17 +78,35 @@ void main() {
       expect(index, 1);
     });
 
-    testWidgets('AppLoading shows white progress indicator', (tester) async {
+    testWidgets('AppLoading defaults to brand and honours color',
+        (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(body: AppLoading()),
+          home: Scaffold(
+            body: Column(
+              children: [
+                AppLoading(key: Key('default')),
+                AppLoading(
+                  key: Key('white'),
+                  color: AppColors.absoluteWhite,
+                ),
+              ],
+            ),
+          ),
         ),
       );
 
-      final indicator = tester.widget<CircularProgressIndicator>(
-        find.byType(CircularProgressIndicator),
-      );
-      expect(indicator.color, AppColors.absoluteWhite);
+      Color? colorOf(String key) => tester
+          .widget<CircularProgressIndicator>(
+            find.descendant(
+              of: find.byKey(Key(key)),
+              matching: find.byType(CircularProgressIndicator),
+            ),
+          )
+          .color;
+
+      expect(colorOf('default'), AppColors.brand);
+      expect(colorOf('white'), AppColors.absoluteWhite);
     });
 
     testWidgets('AppPageIndicator renders markers', (tester) async {

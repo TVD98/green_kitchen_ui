@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../tokens/app_colors.dart';
 import '../tokens/app_radius.dart';
 import '../tokens/app_typography.dart';
 
-/// Light and dark [ThemeData] built from Focuso tokens + Urbanist.
+/// Light and dark [ThemeData] built from Green Kitchen tokens + Urbanist.
 abstract final class AppTheme {
   static ThemeData get light => _build(
         brightness: Brightness.light,
@@ -62,7 +61,11 @@ abstract final class AppTheme {
       brightness: brightness,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: background,
-      textTheme: _textTheme(brightness),
+      fontFamily: AppTypography.fontFamily,
+      package: AppTypography.fontPackage,
+      textTheme: AppTypography.textTheme(
+        ThemeData(brightness: brightness).textTheme,
+      ),
       primaryColor: AppColors.brand,
       dividerColor: stroke,
       filledButtonTheme: FilledButtonThemeData(
@@ -171,7 +174,7 @@ abstract final class AppTheme {
         }),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: AppColors.absoluteWhite,
+        color: AppColors.brand,
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: AppColors.brand,
@@ -187,29 +190,4 @@ abstract final class AppTheme {
     );
   }
 
-  static TextTheme _textTheme(Brightness brightness) {
-    final base = AppTypography.textTheme(
-      ThemeData(brightness: brightness).textTheme,
-    );
-    if (!GoogleFonts.config.allowRuntimeFetching) {
-      return base;
-    }
-    return GoogleFonts.urbanistTextTheme(base).copyWith(
-      displayLarge: AppTypography.display(),
-      displayMedium: AppTypography.display(),
-      displaySmall: AppTypography.headline(),
-      headlineLarge: AppTypography.headline(),
-      headlineMedium: AppTypography.h4(),
-      headlineSmall: AppTypography.title(),
-      titleLarge: AppTypography.title(),
-      titleMedium: AppTypography.h6(),
-      titleSmall: AppTypography.label(),
-      bodyLarge: AppTypography.body(),
-      bodyMedium: AppTypography.body(),
-      bodySmall: AppTypography.caption(),
-      labelLarge: AppTypography.label(),
-      labelMedium: AppTypography.label(),
-      labelSmall: AppTypography.xSmall(),
-    );
-  }
 }

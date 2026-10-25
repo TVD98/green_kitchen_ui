@@ -1,4 +1,4 @@
-/// Green Kitchen design system — Focuso tokens, theme, and base UI widgets.
+/// Green Kitchen design system — tokens, theme, and base UI widgets.
 library;
 
 export 'src/tokens/app_colors.dart';

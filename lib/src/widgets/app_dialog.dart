@@ -7,7 +7,7 @@ import '../tokens/app_radius.dart';
 import '../tokens/app_spacing.dart';
 import '../tokens/app_typography.dart';
 
-/// Focuso-style centered popup shell with blur + dim barrier.
+/// Centered popup shell with blur + dim barrier.
 abstract final class AppDialog {
   static Future<T?> show<T>({
     required BuildContext context,
